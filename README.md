@@ -125,7 +125,16 @@ docker compose exec php php /var/www/html/yii seed
 
 Isso cria 4 usuários, 3 projetos e 20 tarefas de exemplo.
 
-**Login padrão:**
+**Usuários criados no seed:**
+
+| Nome | Email | Senha |
+|------|-------|-------|
+| Admin Dever.io | `admin@dever.io` | `admin123` |
+| João Silva | `joao@dever.io` | `senha123` |
+| Maria Santos | `maria@dever.io` | `senha123` |
+| Pedro Oliveira | `pedro@dever.io` | `senha123` |
+
+**Login recomendado para teste:**
 ```
 Email: admin@dever.io
 Senha: admin123
