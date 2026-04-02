@@ -3,8 +3,9 @@
 Thumbs.db
 
 # Composer
-/vendor/
-/composer.lock
+
+/src/vendor/
+/src/composer.lock
 
 # Yii2 runtime and assets
 /src/runtime/
