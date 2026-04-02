@@ -69,7 +69,66 @@ Senha: admin123
 ```
 
 ---
+## 🛠️ Makefile - Comandos Rápidos
 
+Para facilitar o desenvolvimento, incluímos um `Makefile` com comandos comuns:
+
+### Setup Rápido
+
+```bash
+# Setup completo (recomendado para primeiros usos)
+make setup-full
+
+# Ou setup básico + seed separado
+make setup
+make seed
+```
+
+### Comandos Disponíveis
+
+```bash
+# 🐳 Docker
+make up          # Sobe os containers
+make down        # Derruba os containers
+make build       # Builda os containers
+make restart     # Reinicia os containers
+make logs        # Mostra logs
+make logs-php    # Logs do PHP
+make bash        # Entra no container PHP
+
+# 📦 Dependências
+make composer    # Instala dependências PHP
+make migrate     # Roda migrations
+make seed        # Popula banco com dados demo
+
+# ⚡ Setup
+make setup       # Setup completo (composer + migrate)
+make setup-full  # Setup completo + seed
+
+# 🧪 Testes
+make test        # Roda todos os testes
+make test-unit   # Apenas testes unitários
+
+# 🧹 Limpeza
+make clean       # Limpa containers e volumes
+make clean-all   # Limpa tudo
+
+# 📊 Status
+make status      # Status dos containers
+make ps          # Lista containers
+```
+
+### Exemplo de Primeiro Uso
+
+```bash
+git clone https://github.com/thomazjb/dever.io.git
+cd dever.io
+make setup-full
+```
+
+A aplicação estará pronta em **http://localhost:8080** com dados de demonstração!
+
+---
 ## Estrutura do Projeto
 
 Muitas partes do código foram comentadas utilizando o padrão DOC Block para PHP, permitindo maior clareza nas escolhas técnicas e na documentação do código.
@@ -109,6 +168,21 @@ dever.io/
 
 Para melhor isolamento dos testes unitários, no armazenamento de informações em memória, foi utilizado SQLite.
 
+### Makefile (Recomendado)
+
+```bash
+# Rodar todos os testes
+make test
+
+# Apenas unitários
+make test-unit
+
+# Com cobertura
+docker compose exec php vendor/bin/phpunit --coverage-text --configuration /var/www/html/../phpunit.xml
+```
+
+### Docker Compose (Alternativo)
+
 ```bash
 # Rodar todos os testes
 docker compose exec php vendor/bin/phpunit --configuration /var/www/html/../phpunit.xml
@@ -123,7 +197,26 @@ docker compose exec php vendor/bin/phpunit --coverage-text
 ---
 
 ## Comandos Úteis
+### Makefile (Recomendado)
 
+```bash
+# Acessar container PHP
+make bash
+
+# Rodar migrations
+make migrate
+
+# Popular banco (seed)
+make seed
+
+# Limpar banco
+docker compose exec php php /var/www/html/yii seed/clear
+
+# Logs da aplicação
+make logs
+```
+
+### Docker Compose (Alternativo)
 ```bash
 # Acessar container PHP
 docker compose exec php bash
