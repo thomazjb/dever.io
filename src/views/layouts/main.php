@@ -61,10 +61,10 @@ $isGuest = Yii::$app->user->isGuest;
         }
     </script>
 
-    <!-- Google Fonts - Inter -->
+    <!-- Google Fonts - Inter & Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -143,10 +143,10 @@ $isGuest = Yii::$app->user->isGuest;
             <div class="w-full max-w-md">
                 <!-- Logo -->
                 <div class="text-center mb-8">
-                    <div class="inline-flex items-center gap-2 mb-3">
-                        <div class="w-9 h-9 flex items-center justify-center">
+                    <div class="inline-flex items-center gap-3 mb-3">
+                        <div class="w-12 h-12 flex items-center justify-center">
                 
-                                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8">
+                                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
 
                                     <defs>
                                         <linearGradient id="gradTop" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -217,7 +217,7 @@ $isGuest = Yii::$app->user->isGuest;
                             </div>
 
                         </div>
-                        <span class="text-3xl font-bold text-white">Dever.io</span>
+                        <span class="text-4xl font-black text-white" style="font-family: 'Poppins', sans-serif;">Dever.io</span>
                     </div>
                     <p class="text-primary-200 text-sm">Gerencie tarefas, colabore e acompanhe o progresso</p>
                 </div>
@@ -238,8 +238,8 @@ $isGuest = Yii::$app->user->isGuest;
                 <!-- Logo -->
                 <div class="p-5 border-b border-white/10">
                     <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 flex items-center justify-center">
-                            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="w-8 h-8">
+                        <div class="w-10 h-10 flex items-center justify-center">
+                            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="w-9 h-9">
 
                                 <defs>
                                     <linearGradient id="gradTop" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -308,7 +308,7 @@ $isGuest = Yii::$app->user->isGuest;
 
                             </svg>
                         </div>
-                        <span class="text-xl font-bold tracking-tight">Dever.io</span>
+                        <span class="text-xl font-black tracking-tight" style="font-family: 'Poppins', sans-serif;">Dever.io</span>
                     </div>
                 </div>
 
