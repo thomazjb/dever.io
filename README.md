@@ -36,55 +36,9 @@ Este sistema foi desenvolvido por Thomaz Juliann Boncompagni, para o teste técn
 
 - Docker e Docker Compose instalados.
 
-### Subir o Ambiente
-
-```bash
-# Clonar o repositório
-git clone https://github.com/thomazjb/dever.io.git
-cd dever.io
-
-# Subir os containers
-docker compose up -d
-
-# Aguardar o entrypoint executar:
-# - composer install
-# - migrations
-# - php-fpm start
-```
-
-A aplicação estará disponível em **http://localhost:8080**
-
-### Configurar dados de demonstração (seed)
-
-```bash
-docker compose exec php php /var/www/html/yii seed
-```
-
-Isso cria 4 usuários, 3 projetos e 20 tarefas de exemplo.
-
-**Login padrão:**
-```
-Email: admin@dever.io
-Senha: admin123
-```
-
----
-## 🛠️ Makefile - Comandos Rápidos
-
-Para facilitar o desenvolvimento, incluímos um `Makefile` com comandos comuns:
-
-### Setup Rápido
-
-```bash
-# Setup completo (recomendado para primeiros usos)
-make setup-full
-
-# Ou setup básico + seed separado
-make setup
-make seed
-```
-
 ### Comandos Disponíveis
+
+A Utilização dos comandos make é opcional (makefile), mas altamente recomendada para melhor gerenciamento dos conteiners e testes do projeto.
 
 ```bash
 # 🐳 Docker
@@ -116,6 +70,80 @@ make clean-all   # Limpa tudo
 # 📊 Status
 make status      # Status dos containers
 make ps          # Lista containers
+```
+
+
+### Subir o Ambiente
+
+**Opção 1: Makefile (Recomendado)**
+
+```bash
+# Clonar o repositório
+git clone https://github.com/thomazjb/dever.io.git
+cd dever.io
+
+# Subir os containers
+make up
+
+# Aguardar o entrypoint executar:
+# - composer install
+# - migrations
+# - php-fpm start
+```
+
+**Opção 2: Docker Compose Direto**
+
+```bash
+# Clonar o repositório
+git clone https://github.com/thomazjb/dever.io.git
+cd dever.io
+
+# Subir os containers
+docker compose up -d
+
+# Aguardar o entrypoint executar:
+# - composer install
+# - migrations
+# - php-fpm start
+```
+
+A aplicação estará disponível em **http://localhost:8080**
+
+### Configurar dados de demonstração (seed)
+
+**Opção 1: Makefile (Recomendado)**
+
+```bash
+make seed
+```
+
+**Opção 2: Docker Compose Direto**
+
+```bash
+docker compose exec php php /var/www/html/yii seed
+```
+
+Isso cria 4 usuários, 3 projetos e 20 tarefas de exemplo.
+
+**Login padrão:**
+```
+Email: admin@dever.io
+Senha: admin123
+```
+
+---
+## 🛠️ Setup Rápido - Makefile (Recomendado)
+
+Para facilitar o desenvolvimento, incluímos um `Makefile` com comandos comuns:
+
+```bash
+# Setup completo com dados de demonstração (recomendado para primeiros usos)
+make setup-full
+
+# Ou setup básico
+make setup
+make migrate
+make seed
 ```
 
 ### Exemplo de Primeiro Uso
@@ -168,7 +196,7 @@ dever.io/
 
 Para melhor isolamento dos testes unitários, no armazenamento de informações em memória, foi utilizado SQLite.
 
-### Makefile (Recomendado)
+### Opção 1: Makefile (Recomendado)
 
 ```bash
 # Rodar todos os testes
@@ -176,22 +204,28 @@ make test
 
 # Apenas unitários
 make test-unit
-
-# Com cobertura
-docker compose exec php vendor/bin/phpunit --coverage-text --configuration /var/www/html/../phpunit.xml
 ```
 
-### Docker Compose (Alternativo)
+### Opção 2: Docker Compose Direto
 
 ```bash
 # Rodar todos os testes
-docker compose exec php vendor/bin/phpunit --configuration /var/www/html/../phpunit.xml
+docker compose exec php vendor/bin/phpunit --configuration /var/www/html/phpunit.xml
 
 # Apenas unitários
-docker compose exec php vendor/bin/phpunit --testsuite Unit
+docker compose exec php vendor/bin/phpunit --testsuite Unit --configuration /var/www/html/phpunit.xml
+```
 
-# Com cobertura
-docker compose exec php vendor/bin/phpunit --coverage-text
+### Com Relatório de Cobertura
+
+**Makefile:**
+```bash
+make test -- --coverage-text
+```
+
+**Docker Compose Direto:**
+```bash
+docker compose exec php vendor/bin/phpunit --coverage-text --configuration /var/www/html/phpunit.xml
 ```
 
 ---
