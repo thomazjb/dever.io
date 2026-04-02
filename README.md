@@ -145,6 +145,8 @@ docker compose logs -f php
 
 ## Banco de Dados
 
+No descritivo do teste técnico me foram pedidos Diagrama de entidades e relacionamentos (DER) do banco de dados. Para melhor interpretação do diagrama estou utilizando o mermaid dentro deste arquivo MD e que será considerado na visualização pelo GitHub. 
+
 ```mermaid
 erDiagram
     USER ||--o{ PROJECT : "owns"
