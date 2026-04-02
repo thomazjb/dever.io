@@ -121,12 +121,12 @@ setup-full: up composer migrate seed
 # =============================================
 test:
 	@echo "$(BLUE)🧪 Executando todos os testes...$(NC)"
-	docker compose exec php vendor/bin/phpunit --configuration /var/www/html/../phpunit.xml
+	docker compose exec php vendor/bin/phpunit --configuration /var/www/html/phpunit.xml
 	@echo "$(GREEN)✅ Testes concluídos!$(NC)"
 
 test-unit:
 	@echo "$(BLUE)🧪 Executando testes unitários...$(NC)"
-	docker compose exec php vendor/bin/phpunit --testsuite Unit --configuration /var/www/html/../phpunit.xml
+	docker compose exec php vendor/bin/phpunit --testsuite Unit --configuration /var/www/html/phpunit.xml
 	@echo "$(GREEN)✅ Testes unitários concluídos!$(NC)"
 
 # =============================================

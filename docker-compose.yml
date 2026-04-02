@@ -11,6 +11,8 @@ services:
     container_name: dever-php
     volumes:
       - ./src:/var/www/html
+      - ./phpunit.xml:/var/www/html/phpunit.xml
+      - ./tests:/var/www/html/tests
     environment:
       DB_HOST: mysql
       DB_NAME: dever_db

@@ -5,11 +5,11 @@
  * Usa SQLite em memória para testes rápidos sem depender do MySQL.
  */
 
-$params = require __DIR__ . '/../src/config/params.php';
+$params = require __DIR__ . '/../config/params.php';
 
 return [
     'id' => 'dever-io-tests',
-    'basePath' => dirname(__DIR__) . '/src',
+    'basePath' => dirname(__DIR__),
     'language' => 'pt-BR',
     'components' => [
         'db' => [
