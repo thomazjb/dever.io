@@ -96,6 +96,19 @@ class Project extends ActiveRecord
     }
 
     /**
+     * Cenários para controle de atributos seguros.
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        // Cenário para criação: apenas campos seguros
+        $scenarios[self::SCENARIO_DEFAULT] = ['title', 'description', 'start_date', 'end_date', 'status', 'attachmentFiles'];
+
+        return $scenarios;
+    }
+
+    /**
      * Labels amigáveis.
      */
     public function attributeLabels()

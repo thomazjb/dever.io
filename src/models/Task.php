@@ -91,6 +91,22 @@ class Task extends ActiveRecord
     }
 
     /**
+     * Cenários para controle de atributos seguros.
+     */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        // Cenário para criação: apenas campos seguros
+        $scenarios[self::SCENARIO_DEFAULT] = ['title', 'description', 'due_date', 'priority', 'status', 'assigned_to', 'attachmentFiles'];
+
+        // Cenário para validação completa (usado em testes)
+        $scenarios['validation'] = ['title', 'project_id', 'description', 'due_date', 'priority', 'status', 'assigned_to', 'attachmentFiles'];
+
+        return $scenarios;
+    }
+
+    /**
      * Labels amigáveis.
      */
     public function attributeLabels()
@@ -234,6 +250,39 @@ class Task extends ActiveRecord
             self::STATUS_PENDING => 'amber',
             default => 'slate',
         };
+    }
+
+    /**
+     * Verifica se o usuário tem acesso para editar esta tarefa.
+     * O usuário pode editar se:
+     * - É o criador da tarefa
+     * - É o responsável pela tarefa
+     * - É dono do projeto
+     * - É membro do projeto
+     *
+     * @param int|null $userId ID do usuário (padrão: usuário logado)
+     * @return bool
+     */
+    public function hasAccess(?int $userId = null): bool
+    {
+        $userId = $userId ?? Yii::$app->user->id;
+
+        // Criador da tarefa pode editar
+        if ($this->created_by === $userId) {
+            return true;
+        }
+
+        // Responsável pela tarefa pode editar
+        if ($this->assigned_to === $userId) {
+            return true;
+        }
+
+        // Verificar acesso via projeto
+        if ($this->project) {
+            return $this->project->hasAccess($userId);
+        }
+
+        return false;
     }
 
     // =============================================

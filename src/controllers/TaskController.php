@@ -188,6 +188,11 @@ class TaskController extends Controller
         $project = $this->findProject($projectId);
         $task = $this->findModel($id, $project->id);
 
+        // Verificar se o usuário pode editar esta tarefa
+        if (!$task->hasAccess()) {
+            throw new ForbiddenHttpException('Você não tem permissão para editar esta tarefa.');
+        }
+
         if ($task->load(Yii::$app->request->post())) {
             $uploadedFiles = UploadedFile::getInstances($task, 'attachmentFiles');
 
@@ -223,6 +228,11 @@ class TaskController extends Controller
         $project = $this->findProject($projectId);
         $task = $this->findModel($id, $project->id);
 
+        // Verificar se o usuário pode excluir esta tarefa
+        if (!$task->hasAccess()) {
+            throw new ForbiddenHttpException('Você não tem permissão para excluir esta tarefa.');
+        }
+
         $task->delete();
         Yii::$app->session->setFlash('success', 'Tarefa excluída com sucesso!');
         return $this->redirect(['index', 'projectId' => $projectId]);
@@ -238,6 +248,11 @@ class TaskController extends Controller
     {
         $project = $this->findProject($projectId);
         $task = $this->findModel($id, $project->id);
+
+        // Verificar se o usuário pode modificar esta tarefa
+        if (!$task->hasAccess()) {
+            throw new ForbiddenHttpException('Você não tem permissão para modificar esta tarefa.');
+        }
 
         if ($task->markAsCompleted()) {
             Yii::$app->session->setFlash('success', 'Tarefa marcada como concluída!');

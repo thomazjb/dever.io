@@ -168,6 +168,7 @@ class TaskTest extends TestCase
     public function testRequiredFields(): void
     {
         $task = new Task();
+        $task->scenario = 'validation'; // Usar cenário com todas as validações
         $this->assertFalse($task->validate());
 
         $this->assertArrayHasKey('title', $task->errors);
@@ -217,5 +218,112 @@ class TaskTest extends TestCase
         $task = $this->createTask();
         $this->assertNotNull($task->project);
         $this->assertEquals($this->project->id, $task->project->id);
+    }
+
+    /**
+     * Testa controle de acesso à tarefa.
+     */
+    public function testHasAccess(): void
+    {
+        $creator = $this->createTestUser(['email' => 'creator@dever.io']);
+        $assignee = $this->createTestUser(['email' => 'assignee@dever.io']);
+        $member = $this->createTestUser(['email' => 'member@dever.io']);
+        $stranger = $this->createTestUser(['email' => 'stranger@dever.io']);
+
+        // Adicionar membro ao projeto
+        $this->project->addMember($member->id);
+
+        // Criar tarefa
+        $task = $this->createTask([
+            'created_by' => $creator->id,
+            'assigned_to' => $assignee->id,
+        ]);
+
+        // Criador deve ter acesso
+        $this->assertTrue($task->hasAccess($creator->id));
+
+        // Responsável deve ter acesso
+        $this->assertTrue($task->hasAccess($assignee->id));
+
+        // Membro do projeto deve ter acesso
+        $this->assertTrue($task->hasAccess($member->id));
+
+        // Dono do projeto deve ter acesso
+        $this->assertTrue($task->hasAccess($this->user->id));
+
+        // Usuário estranho não deve ter acesso
+        $this->assertFalse($task->hasAccess($stranger->id));
+    }
+
+    /**
+     * Testa segurança: usuário não pode acessar tarefa de outro projeto.
+     */
+    public function testSecurityUserCannotAccessOthersTasks(): void
+    {
+        $joao = $this->createTestUser(['email' => 'joao@dever.io']);
+        $maria = $this->createTestUser(['email' => 'maria@dever.io']);
+
+        $joaoProject = $this->createTestProject($joao, ['title' => 'Projeto João']);
+        $mariaProject = $this->createTestProject($maria, ['title' => 'Projeto Maria']);
+
+        $joaoTask = $this->createTask([
+            'project_id' => $joaoProject->id,
+            'created_by' => $joao->id,
+            'assigned_to' => $joao->id,
+            'title' => 'Tarefa João',
+        ]);
+
+        $mariaTask = $this->createTask([
+            'project_id' => $mariaProject->id,
+            'created_by' => $maria->id,
+            'assigned_to' => $maria->id,
+            'title' => 'Tarefa Maria',
+        ]);
+
+        // João não pode acessar tarefa de Maria
+        $this->assertFalse($mariaTask->hasAccess($joao->id),
+            'João não deveria ter acesso à tarefa de Maria');
+
+        // Maria não pode acessar tarefa de João
+        $this->assertFalse($joaoTask->hasAccess($maria->id),
+            'Maria não deveria ter acesso à tarefa de João');
+
+        // João pode acessar sua própria tarefa
+        $this->assertTrue($joaoTask->hasAccess($joao->id),
+            'João deveria ter acesso à sua própria tarefa');
+
+        // Maria pode acessar sua própria tarefa
+        $this->assertTrue($mariaTask->hasAccess($maria->id),
+            'Maria deveria ter acesso à sua própria tarefa');
+    }
+
+    /**
+     * Testa cenários de segurança para mass assignment.
+     */
+    public function testScenariosPreventMassAssignment(): void
+    {
+        $task = new Task();
+
+        // Simular dados POST maliciosos tentando modificar campos protegidos
+        $maliciousData = [
+            'title' => 'Tarefa Segura',
+            'description' => 'Descrição segura',
+            'project_id' => 999, // Campo que não deveria ser modificável via POST
+            'created_by' => 999, // Campo que não deveria ser modificável
+            'created_at' => '2020-01-01', // Campo que não deveria ser modificável
+        ];
+
+        // Carregar dados usando cenário padrão (seguro)
+        $task->scenario = Task::SCENARIO_DEFAULT;
+        $task->load($maliciousData, '');
+
+        // Verificar que apenas campos seguros foram carregados
+        $this->assertEquals('Tarefa Segura', $task->title);
+        $this->assertEquals('Descrição segura', $task->description);
+
+        // Verificar que campos protegidos não foram modificados
+        $this->assertNull($task->project_id);
+        $this->assertNull($task->created_by);
+        $this->assertNull($task->created_at);
     }
 }
