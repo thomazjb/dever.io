@@ -153,4 +153,37 @@ class ProjectTest extends TestCase
 
         $this->assertFalse($project->validate(['end_date']));
     }
+
+    /**
+     * Testa segurança: usuário não pode acessar projetos de outros usuários.
+     * Cenário específico: João (joao@dever.io) não pode ver projeto de Maria (maria@dever.io).
+     */
+    public function testSecurityUserCannotAccessOthersProjects(): void
+    {
+        // Simula usuários do seed
+        $maria = $this->createTestUser(['name' => 'Maria Santos', 'email' => 'maria@dever.io']);
+        $joao = $this->createTestUser(['name' => 'João Silva', 'email' => 'joao@dever.io']);
+
+        // Maria cria um projeto
+        $mariaProject = $this->createTestProject($maria, ['title' => 'Projeto de Maria']);
+
+        // João NÃO deve ter acesso ao projeto de Maria
+        $this->assertFalse($mariaProject->hasAccess($joao->id),
+            'João não deve ter acesso ao projeto de Maria');
+
+        // Maria deve ter acesso ao próprio projeto
+        $this->assertTrue($mariaProject->hasAccess($maria->id),
+            'Maria deve ter acesso ao próprio projeto');
+
+        // João cria seu próprio projeto
+        $joaoProject = $this->createTestProject($joao, ['title' => 'Projeto de João']);
+
+        // João deve ter acesso ao próprio projeto
+        $this->assertTrue($joaoProject->hasAccess($joao->id),
+            'João deve ter acesso ao próprio projeto');
+
+        // Maria NÃO deve ter acesso ao projeto de João
+        $this->assertFalse($joaoProject->hasAccess($maria->id),
+            'Maria não deve ter acesso ao projeto de João');
+    }
 }
