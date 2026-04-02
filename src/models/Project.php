@@ -80,6 +80,22 @@ class Project extends ActiveRecord
     }
 
     /**
+     * Antes de salvar, define status padrão se estiver vazio.
+     */
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        if (empty($this->status)) {
+            $this->status = self::STATUS_ACTIVE;
+        }
+
+        return true;
+    }
+
+    /**
      * Labels amigáveis.
      */
     public function attributeLabels()

@@ -142,6 +142,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
         $project->title = $attributes['title'] ?? 'Projeto Teste';
         $project->description = $attributes['description'] ?? 'Descrição do projeto de teste';
         $project->owner_id = $owner->id;
+        $project->status = $attributes['status'] ?? \app\models\Project::STATUS_ACTIVE;
         $project->save(false);
 
         // Simular afterSave (adicionar dono como membro)
