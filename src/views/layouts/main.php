@@ -27,6 +27,7 @@ $isGuest = Yii::$app->user->isGuest;
     <meta charset="<?= Yii::$app->charset ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dever.io - Sistema de Gerenciamento de Tarefas para Desenvolvedores">
+    <link rel="icon" type="image/x-icon" href="<?= Url::to('@web/favicon.ico') ?>">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title ? $this->title . ' | Dever.io' : 'Dever.io') ?></title>
 
