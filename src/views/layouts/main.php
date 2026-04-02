@@ -139,14 +139,14 @@ $isGuest = Yii::$app->user->isGuest;
 
     <?php if ($isGuest): ?>
         <!-- ===== LAYOUT PARA VISITANTES (Login/Registro) ===== -->
-        <div class="min-h-screen bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 flex items-center justify-center p-4">
+        <div class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
             <div class="w-full max-w-md">
                 <!-- Logo -->
                 <div class="text-center mb-8">
-                    <div class="inline-flex items-center gap-3 mb-3">
-                        <div class="w-12 h-12 flex items-center justify-center">
+                    <div class="inline-flex items-center gap-4 mb-4">
+                        <div class="w-16 h-16 flex items-center justify-center">
                 
-                                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="w-10 h-10">
+                                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="w-14 h-14">
 
                                     <defs>
                                         <linearGradient id="gradTop" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -217,9 +217,9 @@ $isGuest = Yii::$app->user->isGuest;
                             </div>
 
                         </div>
-                        <span class="text-4xl font-black text-white" style="font-family: 'Poppins', sans-serif;">Dever.io</span>
+                        <span class="text-5xl font-black text-white" style="font-family: 'Poppins', sans-serif;">Dever.io</span>
                     </div>
-                    <p class="text-primary-200 text-sm">Gerencie tarefas, colabore e acompanhe o progresso</p>
+                    <p class="text-slate-300 text-sm">Gerencie tarefas, colabore e acompanhe o progresso</p>
                 </div>
 
                 <!-- Card de conteúdo -->
