@@ -1,0 +1,52 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Composer
+/vendor/
+/composer.lock
+
+# Yii2 runtime and assets
+/src/runtime/
+/src/web/assets/
+
+# Tests
+/tests/_output/
+/tests/_log/
+
+# IDE
+/.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Logs and temp
+*.log
+*.cache
+*.tmp
+*.swp
+
+# Docker
+docker-compose.override.yml
+**/docker/php/vendor/
+**/docker/php/composer.lock
+
+# Environment
+.env
+*.env
+
+# Node/NPM
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# PHPStorm metadata
+out/
+
+# executables
+*.dll
+*.exe
+
+# Misc
+!.gitkeep

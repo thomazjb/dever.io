@@ -1,0 +1,59 @@
+{
+    "name": "dever/dever-io",
+    "description": "Dever.io - Sistema de Gerenciamento de Tarefas para Desenvolvedores",
+    "keywords": ["yii2", "task-management", "project-management"],
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "require": {
+        "php": ">=8.3",
+        "yiisoft/yii2": "~2.0.49",
+        "yiisoft/yii2-bootstrap5": "~2.0.4",
+        "aws/aws-sdk-php": "^3.283"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5",
+        "yiisoft/yii2-debug": "~2.1.0",
+        "yiisoft/yii2-faker": "~2.0.0"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": ""
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "tests\\": "../tests/"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "yii\\composer\\Installer::postInstall"
+        ],
+        "post-update-cmd": [
+            "yii\\composer\\Installer::postUpdate"
+        ]
+    },
+    "extra": {
+        "yii\\composer\\Installer::postCreateProject": {
+            "setPermission": [
+                {
+                    "runtime": "0777",
+                    "web/assets": "0777"
+                }
+            ]
+        }
+    }
+}
