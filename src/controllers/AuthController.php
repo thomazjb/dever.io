@@ -34,7 +34,7 @@ class AuthController extends Controller
                         'roles' => ['?'], // Apenas visitantes
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'profile', 'update-profile'],
                         'allow' => true,
                         'roles' => ['@'], // Apenas autenticados
                     ],
@@ -94,6 +94,33 @@ class AuthController extends Controller
         return $this->render('register', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * Exibe e processa edição de perfil.
+     *
+     * @return string|\yii\web\Response
+     */
+    public function actionProfile()
+    {
+        $this->layout = 'main';
+        /** @var \app\models\User $user */
+        $user = Yii::$app->user->identity;
+        $user->scenario = 'update';
+
+        if ($user->load(Yii::$app->request->post()) && $user->validate()) {
+            if (!empty($user->password)) {
+                $user->setPassword($user->password);
+            }
+
+            if ($user->save(false)) {
+                Yii::$app->session->setFlash('success', 'Perfil atualizado com sucesso!');
+                return $this->refresh();
+            }
+        }
+
+        $this->view->title = 'Meu Perfil';
+        return $this->render('profile', ['model' => $user]);
     }
 
     /**

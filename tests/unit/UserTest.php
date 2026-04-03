@@ -98,6 +98,68 @@ class UserTest extends TestCase
     }
 
     /**
+     * Testa atualização de perfil: nome e e-mail.
+     */
+    public function testUpdateProfile(): void
+    {
+        $user = $this->createTestUser(['name' => 'Felipe', 'email' => 'felipe@dever.io']);
+        $user->scenario = 'update';
+        $user->name = 'Felipe Atualizado';
+        $user->email = 'felipe.atualizado@dever.io';
+
+        $this->assertTrue($user->validate());
+        $this->assertTrue($user->save(false));
+
+        $updated = User::findOne($user->id);
+        $this->assertEquals('Felipe Atualizado', $updated->name);
+        $this->assertEquals('felipe.atualizado@dever.io', $updated->email);
+    }
+
+    /**
+     * Testa que não aceita e-mail duplicado ao atualizar.
+     */
+    public function testUpdateProfileDuplicateEmailRejected(): void
+    {
+        $this->createTestUser(['email' => 'existente@dever.io']);
+        $user = $this->createTestUser(['email' => 'usuario@dever.io']);
+
+        $user->scenario = 'update';
+        $user->email = 'existente@dever.io';
+
+        $this->assertFalse($user->validate());
+        $this->assertArrayHasKey('email', $user->errors);
+    }
+
+    /**
+     * Testa validação de senha mínima na atualização de perfil.
+     */
+    public function testUpdateProfilePasswordMinLength(): void
+    {
+        $user = $this->createTestUser(['email' => 'senha@dever.io']);
+
+        $user->scenario = 'update';
+        $user->password = '123';
+
+        $this->assertFalse($user->validate());
+        $this->assertArrayHasKey('password', $user->errors);
+    }
+
+    /**
+     * Testa validação de confirmação de senha.
+     */
+    public function testUpdateProfilePasswordConfirmation(): void
+    {
+        $user = $this->createTestUser(['email' => 'confirma@dever.io']);
+
+        $user->scenario = 'update';
+        $user->password = 'senhaSegura123';
+        $user->password_repeat = 'senhaDiferente';
+
+        $this->assertFalse($user->validate());
+        $this->assertArrayHasKey('password_repeat', $user->errors);
+    }
+
+    /**
      * Testa validação de campos obrigatórios.
      */
     public function testRequiredFields(): void

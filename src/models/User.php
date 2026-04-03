@@ -31,6 +31,12 @@ use yii\behaviors\TimestampBehavior;
 
 class User extends ActiveRecord implements IdentityInterface
 {
+    /** Campo temporário para senha modificada */
+    public $password;
+
+    /** Campo temporário para confirmação de senha */
+    public $password_repeat;
+
     /** Status: conta ativa */
     const STATUS_ACTIVE = 10;
     /** Status: conta inativa */
@@ -67,8 +73,24 @@ class User extends ActiveRecord implements IdentityInterface
             ['email', 'required', 'message' => 'Email é obrigatório'],
             ['email', 'email', 'message' => 'Email inválido'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'message' => 'Este email já está cadastrado'],
+            ['email', 'unique', 'targetClass' => self::class, 'targetAttribute' => 'email',
+                'filter' => function ($query) {
+                    if (!$this->isNewRecord) {
+                        $query->andWhere(['<>', 'id', $this->id]);
+                    }
+                },
+                'message' => 'Este email já está cadastrado',
+            ],
             ['email', 'trim'],
+
+            ['password', 'string', 'min' => 8, 'skipOnEmpty' => true,
+                'message' => 'A senha deve ter no mínimo 8 caracteres.'],
+
+            ['password_repeat', 'required', 'when' => function ($model) {
+                return !empty($model->password);
+            }, 'whenClient' => "function (attribute, value) { return $('#user-password').val().length > 0; }", 'message' => 'Por favor confirme a nova senha.'],
+
+            ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => 'As senhas não coincidem.'],
 
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE]],
@@ -78,6 +100,16 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * Labels amigáveis para exibição em formulários.
      */
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+
+        $scenarios[self::SCENARIO_DEFAULT] = ['name', 'email', 'status', 'password', 'password_repeat'];
+        $scenarios['update'] = ['name', 'email', 'password', 'password_repeat'];
+
+        return $scenarios;
+    }
+
     public function attributeLabels()
     {
         return [
@@ -85,6 +117,7 @@ class User extends ActiveRecord implements IdentityInterface
             'name' => 'Nome',
             'email' => 'Email',
             'password_hash' => 'Senha',
+            'password' => 'Nova senha',
             'status' => 'Status',
             'created_at' => 'Criado em',
             'updated_at' => 'Atualizado em',
