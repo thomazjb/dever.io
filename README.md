@@ -300,18 +300,9 @@ docker compose logs -f php
 
 No descritivo do teste técnico me foram pedidos Diagrama de entidades e relacionamentos (DER) do banco de dados. Para melhor interpretação do diagrama estou utilizando o mermaid dentro deste arquivo MD e que será considerado na visualização pelo GitHub.
 
+
 ```mermaid
 erDiagram
-    USER ||--o{ PROJECT : "owns"
-    USER ||--o{ PROJECT_USER : "member of"
-    PROJECT ||--o{ PROJECT_USER : "has members"
-    PROJECT ||--o{ TASK : "contains"
-    USER ||--o{ TASK : "assigned to"
-    USER ||--o{ TASK : "created by"
-    PROJECT ||--o{ ATTACHMENT : "has files"
-    TASK ||--o{ ATTACHMENT : "has files"
-    USER ||--o{ ATTACHMENT : "uploaded by"
-
     USER {
         int id PK
         string name
@@ -347,13 +338,13 @@ erDiagram
         int id PK
         int project_id FK
         int assigned_to FK
-        int created_by FK
         string title
         text description
         date due_date
         string priority
         string status
         int completed_at
+        int created_by FK
         int created_at
         int updated_at
     }
@@ -376,6 +367,15 @@ erDiagram
         int expire
         binary data
     }
+
+    USER ||--o{ PROJECT : owns
+    USER ||--o{ PROJECT_USER : member
+    PROJECT ||--o{ PROJECT_USER : has
+    PROJECT ||--o{ TASK : contains
+    USER ||--o{ TASK : assigned_to
+    USER ||--o{ TASK : created_by
+    PROJECT ||--o{ ATTACHMENT : has
+    TASK ||--o{ ATTACHMENT : has
 ```
 
 ---
