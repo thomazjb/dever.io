@@ -101,6 +101,13 @@ $config = [
             'class' => 'app\components\MinioComponent',
         ],
 
+        // Asset manager para publicar os recursos na pasta correta
+        'assetManager' => [
+            'basePath' => '@webroot/assets',
+            'baseUrl' => '@web/assets',
+            'appendTimestamp' => true,
+        ],
+
         // Sessão
         'session' => [
             'class' => 'yii\web\DbSession',

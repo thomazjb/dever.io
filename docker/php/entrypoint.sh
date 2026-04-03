@@ -33,6 +33,7 @@ if [ -f /var/www/html/yii ]; then
 fi
 
 echo "==> Ajustando permissões..."
+mkdir -p /var/www/html/web/assets /var/www/html/runtime
 chown -R www-data:www-data /var/www/html/runtime /var/www/html/web/assets 2>/dev/null || true
 
 echo "==> Iniciando PHP-FPM..."
