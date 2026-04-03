@@ -2,7 +2,15 @@
 
 **Sistema de Gerenciamento de Tarefas para Desenvolvedores**
 
-Este sistema foi desenvolvido por Thomaz Juliann Boncompagni, para o teste técnico da vaga de Desenvolvedor Fullstack PHP Pleno da Empresa Leme Forense. É um Sistema completo para gerenciar projetos e tarefas com colaboração em equipe, upload de arquivos e dashboard em tempo real. Partes do Front-End foram escritas com auxílio do Claude Opus 4.6 para melhor organização das classes utilizadas para estilização e eficiência. 
+Este sistema foi desenvolvido por Thomaz Juliann Boncompagni, para o teste técnico da vaga de Desenvolvedor Fullstack PHP Pleno da Empresa Leme Forense. É um Sistema completo para gerenciar projetos e tarefas com colaboração em equipe, upload de arquivos e dashboard em tempo real.
+
+O projeto foi inicializado utilizando o Yii2 via Composer sendo injetado como dependência, com um bootstrap customizado ao invés de usar diretamente os templates basic ou advanced. O projeto é conteinerizado e possui isolamento e controle individual das ferramentas utilizadas.
+
+Para a maior clareza e organização do código, a maioria dos comentários feitos, foi escrita utilizando a convenção DocBlock muito conhecida no PHP. 
+
+Partes do código Front-End, das Seeds e do Makefile foram escritas com auxílio do Claude Opus 4.6 (devidamente revisadas e comentadas) para manter o padrão visual dos formulários, estilizações de botões, coerencia visual, legibilidade de comandos make e melhor organização. 
+
+Preferi isolar os Testes em uma pasta fora do projeto do Yii2, para permitir clareza e que testes fora do escopo do Yii2 possam ser implementados caso necessário. Alguns dos testes ainda utilizam rotinas do Yii através do autoload do Composer. No TestCase, faço o bootstrap da aplicação para garantir que o ambiente seja consistente. Isso traz um leve acoplamento, mas simplifica a escrita e manutenção dos testes dentro do escopo do projeto.
 
 ---
 
@@ -168,35 +176,42 @@ A aplicação estará pronta em **http://localhost:8080** com dados de demonstra
 ---
 ## Estrutura do Projeto
 
-Muitas partes do código foram comentadas utilizando o padrão DOC Block para PHP, permitindo maior clareza nas escolhas técnicas e na documentação do código.
-
-O projeto está conteinerizado para permitir mais eficiência no deploy e, também, isolamento do ambiente de quem estará testando o código.
- Na pasta "docker" estão todos os arquivos de configuração dos conteiners.
- Na pasta "src" estão os arquivos do framework Yii2 estruturados em MVC e outras pastas de auxílio do back-end. Na pasta "tests" é possível encontrar os testes unitários que foram descritos como necessários na conversa técnica.
+O projeto é organizado em pastas claras para separar infraestrutura, aplicação e testes.
+A pasta `docker/` contém a configuração de containeres e serviços. A pasta `src/` concentra a aplicação Yii2 em MVC, com controllers, models, views e componentes de infraestrutura. A pasta `tests/` guarda testes unitários e de integração, com bootstrap e configuração próprios.
 
 ```
 dever.io/
-├── docker/
-│   ├── nginx/default.conf      # Config Nginx
-│   ├── php/Dockerfile           # PHP 8.3-FPM
-│   ├── php/entrypoint.sh        # Setup automático
-│   └── mysql/init.sql           # Charset UTF-8
-├── src/
-│   ├── commands/                # Console (SeedController)
-│   ├── components/              # MinioComponent
-│   ├── config/                  # web, console, db, params
-│   ├── controllers/             # Auth, Dashboard, Project, Task, Site
-│   ├── migrations/              # Tabelas do banco
-│   ├── models/                  # User, Project, Task, Attachment...
-│   ├── views/                   # Templates (auth, dashboard, project, task)
-│   └── web/                     # Entry point (index.php)
-├── tests/
-│   ├── unit/                    # UserTest, ProjectTest, TaskTest, AuthTest
-│   ├── bootstrap.php
-│   ├── config.php               # Config com SQLite em memória
-│   └── TestCase.php             # Base com helpers
-├── docker-compose.yml
-└── phpunit.xml
+├── docker/                      # Containers: PHP, Nginx e MySQL
+│   ├── mysql/
+│   │   └── init.sql             # Inicialização do banco
+│   ├── nginx/
+│   │   └── default.conf         # Configuração do Nginx
+│   └── php/
+│       ├── Dockerfile           # PHP 8.3-FPM
+│       └── entrypoint.sh        # Setup do container PHP
+├── src/                         # Código da aplicação Yii2
+│   ├── commands/                # Console commands (SeedController)
+│   ├── components/              # Serviços customizados (MinioComponent)
+│   ├── config/                  # Configurações web, console, db, params
+│   ├── controllers/             # Regras de negócio e rotas
+│   ├── migrations/              # Criação de tabelas
+│   ├── models/                  # Entidades e formulários
+│   ├── views/                   # Templates e layouts
+│   │   ├── auth/
+│   │   ├── dashboard/
+│   │   ├── project/
+│   │   └── task/
+│   └── web/                     # Entry point e recursos públicos
+├── tests/                       # Testes unitários e funcionais
+│   ├── functional/              # Testes de fluxo da aplicação
+│   ├── unit/                    # Testes de models e controllers
+│   ├── bootstrap.php           # Bootstrap de testes
+│   ├── config.php               # Configuração de ambiente de teste
+│   └── TestCase.php             # Base de testes e helpers
+├── docker-compose.yml           # Orquestração do ambiente Docker
+├── Makefile                    # Atalhos para setup e deploy
+├── phpunit.xml                 # Configuração do PHPUnit
+└── README.md                    # Documentação do projeto
 ```
 
 ---
