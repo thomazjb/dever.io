@@ -236,8 +236,8 @@ $isGuest = Yii::$app->user->isGuest;
             <!-- ===== SIDEBAR ===== -->
             <aside id="sidebar" class="sidebar-transition w-64 bg-dark-900 text-white flex flex-col shadow-xl">
                 <!-- Logo -->
-                <div class="p-5 border-b border-white/10">
-                    <div class="flex items-center gap-3">
+                <a href="<?= Url::to(['/dashboard/index']) ?>" class="block p-5 border-b border-white/10 hover:bg-white/10 transition-colors">
+                    <div class="flex items-center justify-center gap-1">
                         <div class="w-10 h-10 flex items-center justify-center">
                             <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" class="w-9 h-9">
 
@@ -310,7 +310,7 @@ $isGuest = Yii::$app->user->isGuest;
                         </div>
                         <span class="text-xl font-black tracking-tight" style="font-family: 'Poppins', sans-serif;">Dever.io</span>
                     </div>
-                </div>
+                </a>
 
                 <!-- Navegação principal -->
                 <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
