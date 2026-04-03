@@ -4,6 +4,8 @@
 
 Este sistema foi desenvolvido por Thomaz Juliann Boncompagni, para o teste técnico da vaga de Desenvolvedor Fullstack PHP Pleno da Empresa Leme Forense. É um Sistema completo para gerenciar projetos e tarefas com colaboração em equipe, upload de arquivos e dashboard em tempo real.
 
+Como descrito no enunciado, o DER (Diagrama Entidade-Relacionamento) deveria ser disponibilizado, adicionei ele na seção Banco de Dados para rapidez na visualização, mas também é possível encontrar na root deste repositório os arquivos DER.png e DER.pdf caso seja necessária a apreciação de outra forma. Ambos os arquivos foram criados através do Mysql Workbench.
+
 O projeto foi inicializado utilizando o Yii2 via Composer sendo injetado como dependência, com um bootstrap customizado ao invés de usar diretamente os templates basic ou advanced. O projeto é conteinerizado e possui isolamento e controle individual das ferramentas utilizadas.
 
 Para a maior clareza e organização do código, a maioria dos comentários feitos, foi escrita utilizando a convenção DocBlock muito conhecida no PHP. 
@@ -296,7 +298,7 @@ docker compose logs -f php
 
 ## Banco de Dados
 
-No descritivo do teste técnico me foram pedidos Diagrama de entidades e relacionamentos (DER) do banco de dados. Para melhor interpretação do diagrama estou utilizando o mermaid dentro deste arquivo MD e que será considerado na visualização pelo GitHub. 
+No descritivo do teste técnico me foram pedidos Diagrama de entidades e relacionamentos (DER) do banco de dados. Para melhor interpretação do diagrama estou utilizando o mermaid dentro deste arquivo MD e que será considerado na visualização pelo GitHub.
 
 ```mermaid
 erDiagram
@@ -305,8 +307,10 @@ erDiagram
     PROJECT ||--o{ PROJECT_USER : "has members"
     PROJECT ||--o{ TASK : "contains"
     USER ||--o{ TASK : "assigned to"
+    USER ||--o{ TASK : "created by"
     PROJECT ||--o{ ATTACHMENT : "has files"
     TASK ||--o{ ATTACHMENT : "has files"
+    USER ||--o{ ATTACHMENT : "uploaded by"
 
     USER {
         int id PK
@@ -314,7 +318,9 @@ erDiagram
         string email UK
         string password_hash
         string auth_key
-        int status
+        smallint status
+        int created_at
+        int updated_at
     }
 
     PROJECT {
@@ -325,19 +331,31 @@ erDiagram
         date end_date
         int owner_id FK
         string status
+        int created_at
+        int updated_at
+    }
+
+    PROJECT_USER {
+        int id PK
+        int project_id FK
+        int user_id FK
+        string role
+        int created_at
     }
 
     TASK {
         int id PK
         int project_id FK
         int assigned_to FK
+        int created_by FK
         string title
         text description
         date due_date
         string priority
         string status
         int completed_at
-        int created_by FK
+        int created_at
+        int updated_at
     }
 
     ATTACHMENT {
@@ -346,8 +364,17 @@ erDiagram
         int entity_id
         string filename
         string original_name
+        string mime_type
+        int size
         string storage_path
         int uploaded_by FK
+        int created_at
+    }
+
+    SESSION {
+        char id PK
+        int expire
+        binary data
     }
 ```
 
