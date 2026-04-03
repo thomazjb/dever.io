@@ -234,7 +234,7 @@ $isGuest = Yii::$app->user->isGuest;
         <div class="flex h-screen overflow-hidden">
 
             <!-- ===== SIDEBAR ===== -->
-            <aside id="sidebar" class="sidebar-transition w-64 bg-dark-900 text-white flex flex-col shadow-xl">
+            <aside id="sidebar" class="sidebar-transition transform -translate-x-full lg:translate-x-0 lg:static fixed inset-y-0 left-0 z-40 w-64 bg-dark-900 text-white flex flex-col shadow-xl">
                 <!-- Logo -->
                 <a href="<?= Url::to(['/dashboard/index']) ?>" class="block p-5 border-b border-white/10 hover:bg-white/10 transition-colors">
                     <div class="flex items-center justify-center gap-1">
@@ -432,9 +432,44 @@ $isGuest = Yii::$app->user->isGuest;
 
         <!-- Script para toggle sidebar mobile -->
         <script>
-            document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
-                const sidebar = document.getElementById('sidebar');
-                sidebar.classList.toggle('-translate-x-full');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            let overlay;
+
+            const showSidebar = () => {
+                sidebar.classList.remove('-translate-x-full');
+                overlay = document.createElement('div');
+                overlay.setAttribute('id', 'sidebar-overlay');
+                overlay.className = 'fixed inset-0 bg-black/40 z-30 lg:hidden';
+                overlay.addEventListener('click', hideSidebar);
+                document.body.appendChild(overlay);
+                document.body.classList.add('overflow-hidden');
+            };
+
+            const hideSidebar = () => {
+                sidebar.classList.add('-translate-x-full');
+                if (overlay) {
+                    overlay.remove();
+                    overlay = null;
+                }
+                document.body.classList.remove('overflow-hidden');
+            };
+
+            sidebarToggle?.addEventListener('click', () => {
+                if (sidebar.classList.contains('-translate-x-full')) {
+                    showSidebar();
+                } else {
+                    hideSidebar();
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 1024) {
+                    sidebar.classList.remove('-translate-x-full');
+                    if (overlay) hideSidebar();
+                } else {
+                    sidebar.classList.add('-translate-x-full');
+                }
             });
         </script>
     <?php endif; ?>
