@@ -6,6 +6,7 @@
  * @var yii\data\ActiveDataProvider $dataProvider
  * @var string|null $filterStatus
  * @var string|null $filterPriority
+ * @var string|null $filterOverdue
  */
 
 use yii\helpers\Html;
@@ -42,8 +43,13 @@ use yii\widgets\LinkPager;
                 <option value="high" <?= $filterPriority === 'high' ? 'selected' : '' ?>>Alta</option>
             </select>
         </div>
+        <?php if ($filterOverdue): ?>
+            <input type="hidden" name="overdue" value="1">
+            <span class="text-xs text-red-600 font-semibold bg-red-100 px-2 py-1 rounded-full">Apenas atrasadas</span>
+        <?php endif; ?>
+
         <button type="submit" class="px-4 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-lg transition-colors">Filtrar</button>
-        <?php if ($filterStatus || $filterPriority): ?>
+        <?php if ($filterStatus || $filterPriority || $filterOverdue): ?>
             <a href="<?= Url::to(['/task/my-tasks']) ?>" class="text-sm text-primary-600 hover:text-primary-700">Limpar</a>
         <?php endif; ?>
     </form>

@@ -30,7 +30,7 @@ use yii\helpers\Url;
 <!-- Cards de Estatísticas -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
     <!-- Total de Projetos -->
-    <div class="bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-shadow">
+    <a href="<?= Url::to(['/project/index']) ?>" class="block bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md hover:border-primary-200 transition-shadow">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
                 <i data-lucide="folder-kanban" class="w-5 h-5 text-primary-600"></i>
@@ -40,10 +40,10 @@ use yii\helpers\Url;
                 <p class="text-xs text-slate-500">Projetos</p>
             </div>
         </div>
-    </div>
+    </a>
 
     <!-- Tarefas Pendentes -->
-    <div class="bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-shadow">
+    <a href="<?= Url::to(['/task/my-tasks', 'status' => 'pending']) ?>" class="block bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md hover:border-amber-200 transition-shadow">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center">
                 <i data-lucide="clock" class="w-5 h-5 text-amber-600"></i>
@@ -53,10 +53,10 @@ use yii\helpers\Url;
                 <p class="text-xs text-slate-500">Pendentes</p>
             </div>
         </div>
-    </div>
+    </a>
 
     <!-- Em Andamento -->
-    <div class="bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-shadow">
+    <a href="<?= Url::to(['/task/my-tasks', 'status' => 'in_progress']) ?>" class="block bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md hover:border-blue-200 transition-shadow">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                 <i data-lucide="loader" class="w-5 h-5 text-blue-600"></i>
@@ -66,10 +66,10 @@ use yii\helpers\Url;
                 <p class="text-xs text-slate-500">Em Andamento</p>
             </div>
         </div>
-    </div>
+    </a>
 
     <!-- Concluídas -->
-    <div class="bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md transition-shadow">
+    <a href="<?= Url::to(['/task/my-tasks', 'status' => 'completed']) ?>" class="block bg-white rounded-xl border border-slate-200 p-5 hover:shadow-md hover:border-emerald-200 transition-shadow">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
                 <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>
@@ -79,10 +79,10 @@ use yii\helpers\Url;
                 <p class="text-xs text-slate-500">Concluídas</p>
             </div>
         </div>
-    </div>
+    </a>
 
     <!-- Atrasadas -->
-    <div class="bg-white rounded-xl border border-red-200 p-5 hover:shadow-md transition-shadow <?= $overdueCount > 0 ? 'ring-2 ring-red-100' : '' ?>">
+    <a href="<?= Url::to(['/task/my-tasks', 'overdue' => 1]) ?>" class="block bg-white rounded-xl border border-red-200 p-5 hover:shadow-md transition-shadow <?= $overdueCount > 0 ? 'ring-2 ring-red-100' : '' ?>">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
                 <i data-lucide="alert-triangle" class="w-5 h-5 text-red-600"></i>
@@ -92,7 +92,7 @@ use yii\helpers\Url;
                 <p class="text-xs text-slate-500">Atrasadas</p>
             </div>
         </div>
-    </div>
+    </a>
 </div>
 
 <!-- Barra de Progresso Geral -->

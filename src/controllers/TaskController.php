@@ -99,12 +99,18 @@ class TaskController extends Controller
 
         $status = Yii::$app->request->get('status');
         $priority = Yii::$app->request->get('priority');
+        $overdue = Yii::$app->request->get('overdue');
 
         if ($status) {
             $query->andWhere(['status' => $status]);
         }
         if ($priority) {
             $query->andWhere(['priority' => $priority]);
+        }
+        if ($overdue) {
+            $query->andWhere(['!=', 'status', Task::STATUS_COMPLETED])
+                  ->andWhere(['<', 'due_date', date('Y-m-d')])
+                  ->andWhere(['is not', 'due_date', null]);
         }
 
         $dataProvider = new ActiveDataProvider([
@@ -117,6 +123,7 @@ class TaskController extends Controller
             'dataProvider' => $dataProvider,
             'filterStatus' => $status,
             'filterPriority' => $priority,
+            'filterOverdue' => $overdue,
         ]);
     }
 
