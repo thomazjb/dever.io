@@ -149,7 +149,7 @@ Senha: admin123
 ```
 
 ---
-## 🛠️ Setup Rápido - Makefile (Recomendado)
+## Setup Rápido - Makefile (Recomendado)
 
 Para facilitar o desenvolvimento, incluímos um `Makefile` com comandos comuns:
 
