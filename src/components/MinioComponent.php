@@ -78,19 +78,28 @@ class MinioComponent extends Component
     {
         $bucket = getenv('MINIO_BUCKET') ?: 'dever-uploads';
 
-        $cmd = $this->_client->getCommand('GetObject', [
+        $publicEndpoint = getenv('MINIO_PUBLIC_ENDPOINT') ?: getenv('MINIO_ENDPOINT') ?: 'http://localhost:9000';
+
+        // Gerar um cliente temporário com o endpoint público para garantir assinatura válida
+        $client = new S3Client([
+            'version' => 'latest',
+            'region' => getenv('MINIO_REGION') ?: 'us-east-1',
+            'endpoint' => $publicEndpoint,
+            'use_path_style_endpoint' => true,
+            'credentials' => [
+                'key' => getenv('MINIO_KEY') ?: 'minio_access_key',
+                'secret' => getenv('MINIO_SECRET') ?: 'minio_secret_key',
+            ],
+        ]);
+
+        $cmd = $client->getCommand('GetObject', [
             'Bucket' => $bucket,
             'Key' => $key,
         ]);
 
-        $request = $this->_client->createPresignedRequest($cmd, "+{$expiry} minutes");
+        $request = $client->createPresignedRequest($cmd, "+{$expiry} minutes");
 
-        // Substituir endpoint interno pelo público para acesso via browser
-        $url = (string) $request->getUri();
-        $internalEndpoint = getenv('MINIO_ENDPOINT') ?: 'http://minio:9000';
-        $publicEndpoint = getenv('MINIO_PUBLIC_ENDPOINT') ?: 'http://localhost:9000';
-
-        return str_replace($internalEndpoint, $publicEndpoint, $url);
+        return (string) $request->getUri();
     }
 
     /**

@@ -174,7 +174,7 @@ class TaskController extends Controller
         }
 
         // Membros do projeto para select de assignee
-        $members = $project->getMembers()->select(['user.id', 'user.name'])->indexBy('id')->column();
+        $members = $project->getMembers()->select(['user.name'])->indexBy('user.id')->column();
 
         $this->view->title = 'Nova Tarefa';
         return $this->render('create', [
@@ -214,7 +214,7 @@ class TaskController extends Controller
             }
         }
 
-        $members = $project->getMembers()->select(['user.id', 'user.name'])->indexBy('id')->column();
+        $members = $project->getMembers()->select(['user.name'])->indexBy('user.id')->column();
 
         $this->view->title = 'Editar: ' . $task->title;
         return $this->render('update', [

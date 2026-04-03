@@ -152,7 +152,7 @@ $isUpdate = !$model->isNewRecord;
             <?php endif; ?>
 
             <!-- Ações -->
-            <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+            <div class="flex items-center justify-end gap-3 p-4 border-t border-slate-100">
                 <a href="<?= Url::to(['/project/view', 'id' => $project->id]) ?>"
                    class="px-4 py-2.5 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
                     Cancelar
